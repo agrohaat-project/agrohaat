@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/utils';
@@ -20,7 +20,15 @@ interface Farmer {
   location: { district: string; upazila: string };
 }
 
-export default function SpecialistMessages() {
+export default function SpecialistMessagesPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
+      <SpecialistMessages />
+    </Suspense>
+  );
+}
+
+function SpecialistMessages() {
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const selectedFarmerId = searchParams.get('farmerId');
